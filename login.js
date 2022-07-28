@@ -34,7 +34,7 @@ const verSiHayCosas = async (parametro,parametro2)=> {
     console.log(usuarioLogueado.nombre)
     localStorage.setItem("usuarioActual",JSON.stringify(usuarioLogueado) )
     await Swal.fire('Bienvenido ' +usuarioLogueado.nombre)
-    setTimeout(() => location.replace('http://127.0.0.1:5500/index.html', 50000))
+    setTimeout(() => location.replace('http://127.0.0.1:5500/main.html', 50000))
         }
     }
 

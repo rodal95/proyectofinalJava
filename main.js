@@ -38,7 +38,7 @@ botonConsultar.addEventListener("click",()=>{
 /* Depositos */
 
 botonDepositar.addEventListener("click", ()=> {
-    EscribirMovimientos.innerHTML= `Ingrese el monto a depositar<input id="MontoDepositar"></input>
+    EscribirMovimientos.innerHTML= `Ingrese el monto a depositar<input id="MontoDepositar"></input><br>
     <button id="aceptar">Aceptar</button><button id="cancelar">Cancelar</button>`
     const MontoDepositar = document.getElementById("MontoDepositar")
     const aceptar = document.getElementById("aceptar")
@@ -66,8 +66,8 @@ botonDepositar.addEventListener("click", ()=> {
 /* Transferencias */
 
 botonTransferir.addEventListener("click", ()=>{
-    EscribirMovimientos.innerHTML = `Ingrese el monto<input id="MontoTransferir"></input>Ingrese el CBU
-    <input id="CBUenviar"></input><button id="aceptar">Aceptar</button><button id="cancelar">Cancelar</button>`
+    EscribirMovimientos.innerHTML = `Ingrese el monto<input id="MontoTransferir"></input><br>Ingrese el CBU
+    <input id="CBUenviar"></input><br><button id="aceptar">Aceptar</button><button id="cancelar">Cancelar</button>`
     const aceptar = document.getElementById("aceptar")
     const cancelar = document.getElementById("cancelar")
     const MontoTransferir = document.getElementById("MontoTransferir")
