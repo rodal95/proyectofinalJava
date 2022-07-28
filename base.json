@@ -1,0 +1,39 @@
+
+    [
+      {
+        
+        "usuario": "roald",
+        
+        "contraseña": "1234",
+
+        "nombre": "Rodrigo Alday"
+          
+       },
+       {
+        
+        "usuario": "ferluna",
+        
+        "contraseña": "1234",
+
+        "nombre": "Fernando Luna"
+        
+       },
+       {
+        
+        "usuario": "nacho",
+        
+        "contraseña": "1234",
+
+        "nombre": "Ignacio Basilio"
+        
+       },
+       {
+        
+        "usuario": "admin1",
+        
+        "contraseña": "admin",
+
+        "nombre": "Administrador Generico"
+        
+       }
+    ]
