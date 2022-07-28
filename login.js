@@ -6,7 +6,7 @@ const contraseñaLog = document.getElementById("contraseñaLog")
 const botonLog = document.querySelector("#Ingresar")
 const nuevoUsuario = document.getElementById("nuevoUsuario")
 const logueo = document.getElementById("logueo")
-
+const contenedor = document.getElementById("")
 
 
 botonLog.addEventListener('click', () => {
@@ -36,7 +36,7 @@ const verSiHayCosas = async (parametro,parametro2)=> {
     logueo.innerHTML = ""
     await Swal.fire('Bienvenido ' +usuarioLogueado.nombre)
     const botones = document.getElementById("botones")
-
+    
     botones.innerHTML = `<h1 id="Titulo">Bienvenido a Cashy Cash ${usuarioLogueado.nombre}<br>Elija la opcion que desea realizar</h1>
     <button id="Consultar">Consultar Saldo</button><br>
     <button id="Transferir">Transferir</button><br>
@@ -44,8 +44,16 @@ const verSiHayCosas = async (parametro,parametro2)=> {
     <button id="Depositar">Depositar</button><br>
     <button id="Prestamo"">Solicitar un Prestamo</button><br>
     <button id="Token">Token</button><br>
-    <button id="Salir"><a href="index.html">salir</a></button>`
+    <button id="Salir"><a href="index.html">salir</a></button>
+    <div id="EscribirSaldo">
+
+    </div>
+    <div id="EscribirMovimientos">
+        
+    
+    </div>`
     const usuarioOn = JSON.parse(localStorage.getItem("usuarioActual"))
+    
 let saldoActual = parseInt(Math.random()*50124)
 
 const saldoCuenta = saldoActual
