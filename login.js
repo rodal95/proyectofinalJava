@@ -6,7 +6,7 @@ const contraseñaLog = document.getElementById("contraseñaLog")
 const botonLog = document.querySelector("#Ingresar")
 const nuevoUsuario = document.getElementById("nuevoUsuario")
 const logueo = document.getElementById("logueo")
-const contenedor = document.getElementById("")
+const contenedor = document.getElementById("contenedor")
 
 
 botonLog.addEventListener('click', () => {
@@ -35,9 +35,9 @@ const verSiHayCosas = async (parametro,parametro2)=> {
     localStorage.setItem("usuarioActual",JSON.stringify(usuarioLogueado) )
     logueo.innerHTML = ""
     await Swal.fire('Bienvenido ' +usuarioLogueado.nombre)
-    const botones = document.getElementById("botones")
     
-    botones.innerHTML = `<h1 id="Titulo">Bienvenido a Cashy Cash ${usuarioLogueado.nombre}<br>Elija la opcion que desea realizar</h1>
+    contenedor.innerHTML=`<div id="botones">
+    <h1 id="Titulo">Bienvenido a Cashy Cash ${usuarioLogueado.nombre}<br>Elija la opcion que desea realizar</h1>
     <button id="Consultar">Consultar Saldo</button><br>
     <button id="Transferir">Transferir</button><br>
     <button id="Movimientos">Resumen de Movimientos</button><br>
@@ -45,6 +45,8 @@ const verSiHayCosas = async (parametro,parametro2)=> {
     <button id="Prestamo"">Solicitar un Prestamo</button><br>
     <button id="Token">Token</button><br>
     <button id="Salir"><a href="index.html">salir</a></button>
+        
+    </div> 
     <div id="EscribirSaldo">
 
     </div>
@@ -52,6 +54,7 @@ const verSiHayCosas = async (parametro,parametro2)=> {
         
     
     </div>`
+    
     const usuarioOn = JSON.parse(localStorage.getItem("usuarioActual"))
     
 let saldoActual = parseInt(Math.random()*50124)
