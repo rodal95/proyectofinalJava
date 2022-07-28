@@ -1,3 +1,32 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const botones = document.getElementById("botones")
+botones.innerHTML = `<button id="Consultar">Consultar Saldo</button><br>
+<button id="Transferir">Transferir</button><br>
+<button id="Movimientos">Resumen de Movimientos</button><br>
+<button id="Depositar">Depositar</button><br>
+<button id="Prestamo"">Solicitar un Prestamo</button><br>
+<button id="Token">Token</button><br>
+<button id="Salir"><a href="index.html">salir</a></button>`
+
 const usuarioOn = JSON.parse(localStorage.getItem("usuarioActual"))
 let saldoActual = parseInt(Math.random()*50124)
 
@@ -11,7 +40,7 @@ const titulo = document.getElementById("Titulo")
 const EscribirSaldo = document.getElementById("EscribirSaldo")
 const EscribirMovimientos = document.getElementById("EscribirMovimientos")
 
-titulo.innerHTML = `Bienvenido a Cashy Cash ${usuarioOn.nombre}`
+titulo.innerHTML = `Bienvenido a Cashy Cash ${usuarioOn.nombre}<br>Elija la opcion que desea realizar`
 
 let arrayMov = []
 
