@@ -1,6 +1,5 @@
 /* logeo */
 let usuariosRegistrados = []
-let usuarioLogueado = {}
 const usuarioLog = document.getElementById("usuarioLog")
 const contraseñaLog = document.getElementById("contraseñaLog")
 const botonLog = document.querySelector("#Ingresar")
@@ -23,17 +22,27 @@ botonLog.addEventListener('click', () => {
 })
 
 
-window.addEventListener('DOMContentLoaded', ()=> {verSiHayCosas()})
 
+const saveActualizacion = ()=>{
+    if(window.localStorage.getItem('usuarioActual')){
+        usuarioLogueado = JSON.parse(window.localStorage.getItem('usuarioActual'))
+        inyector()
+        setTimeout(() => {window.localStorage.removeItem('usuarioActual')
+        }, 35000);
+    }else{
+        return
+    }
+}
 
+window.addEventListener('DOMContentLoaded', saveActualizacion)
 
-const inyector = async ()=>{   
+const inyector =  ()=>{   
     /* con esta funcion hace la inyeccion de los nodos de html */
     titulo2.innerHTML=""
-    console.log(usuarioLogueado.nombre)
     localStorage.setItem("usuarioActual",JSON.stringify(usuarioLogueado) )
     logueo.innerHTML = ""
-    await Swal.fire('Bienvenido ' +usuarioLogueado.nombre)
+
+    
     const titulo = document.getElementById("titulo")
     titulo.innerHTML=`Bienvenido a Cashy Cash ${usuarioLogueado.nombre}<br>Elija la opcion que desea realizar`
     contenedor.innerHTML=`<div id="botones">
@@ -42,12 +51,12 @@ const inyector = async ()=>{
     <button id="Movimientos">Resumen de Movimientos</button><br>
     <button id="Depositar">Depositar</button><br>
     <button id="Token">Token</button><br>
-    <button id="Salir"><a href="index.html">salir</a></button></div>
+    <button id="Salir">Salir</button></div>
+    <div id="escribirToken"></div>
     <div id="EscribirSaldo"></div>
     <div id="hacerAcciones"></div>
     <div id="EscribirMovimientos"></div>`
     
-    const usuarioOn = JSON.parse(localStorage.getItem("usuarioActual"))
     agregadora()
     
 }
@@ -58,20 +67,21 @@ const agregadora = ()=>{
     /* esta funcion se utiliza para agregar eventos al DOM  que se agrega por JavaScript*/
 let saldoActual = parseInt(Math.random()*50124)
 
-const saldoCuenta = saldoActual
+
 const botonConsultar = document.getElementById("Consultar")
 const botonTransferir = document.getElementById("Transferir")
 const botonMovimientos = document.getElementById("Movimientos")
 const botonDepositar = document.getElementById("Depositar")
 const botonToken = document.getElementById("Token")
+const botonSalir = document.getElementById("Salir")
 
 const EscribirSaldo = document.getElementById("EscribirSaldo")
 const EscribirMovimientos = document.getElementById("EscribirMovimientos")
 const hacerAcciones = document.getElementById("hacerAcciones")
-
+const escribirToken = document.getElementById("escribirToken")
 
 let arrayMov = []
-
+let intervalo = 0
 class Movimientos{
         constructor (monto,cbu,tipo,comprobante) {
     this.monto = monto,
@@ -80,13 +90,18 @@ class Movimientos{
     this.comprobante = comprobante
     }
 }   
+botonToken.addEventListener("click", ()=>{
+    escribirToken.innerHTML = `Su Token es <br> ${parseInt(Math.random() * 1000000)}`
+    setTimeout(()=> escribirToken.innerHTML="", 7000)
+    
+})
 
 
 /* consultar saldo */
 
 botonConsultar.addEventListener("click", ()=>{
     EscribirSaldo.innerHTML = `<p>Su saldo es<br> <b>$ ${saldoActual}</b></p>`
-    setTimeout(()=> EscribirSaldo.innerHTML = "", 5000)
+    setTimeout(()=> EscribirSaldo.innerHTML="", 7000)
    
 })
 
@@ -122,25 +137,32 @@ botonDepositar.addEventListener("click", ()=> {
 /* Fin de depositar */
 
 
+/**Boton salir */
+botonSalir.addEventListener("click", ()=>{
+    window.localStorage.removeItem('usuarioActual')
+    location.reload()
+})
+/* Fin de salir*/
+
 /* Transferencias */
 botonTransferir.addEventListener("click", ()=>{
-    hacerAcciones.innerHTML = `<span>Ingrese el monto</span><input id="MontoTransferir"></input><br>Ingrese el CBU
-    <input id="CBUenviar"></input><br><button id="aceptar">Aceptar</button><button id="cancelar">Cancelar</button>`
+    hacerAcciones.innerHTML = `<span>Ingrese el monto $$</span><input type="number" id="MontoTransferir"></input><br>Ingrese el CBU
+    <input type="number" id="CBUenviar"></input><br><button id="aceptar">Aceptar</button><button id="cancelar">Cancelar</button>`
     const aceptar = document.getElementById("aceptar")
     const cancelar = document.getElementById("cancelar")
     const MontoTransferir = document.getElementById("MontoTransferir")
     const CBUenviar = document.getElementById("CBUenviar")
 
-    
     aceptar.addEventListener("click",()=>{
-        if(parseInt(MontoTransferir.value)<= saldoActual){
+        if(parseInt(MontoTransferir.value)<= saldoActual && CBUenviar.value != ""){
         Transferencias(MontoTransferir, CBUenviar)
         Swal.fire("Transferencia realizada con exito")
-        hacerAcciones.innerHTML=""
-    }else {Swal.fire("Ingreso un monto a transferir superior a su saldo actual")}
+        hacerAcciones.innerHTML=""}
+        else {Swal.fire("Ingreso un monto a transferir superior a su saldo actual y/o ingrese un cbu para poder enviar")
+        }
 
-    })
-    cancelar.addEventListener("click", ()=> {
+    })  
+        cancelar.addEventListener("click", ()=> {
         hacerAcciones.innerHTML = ""
         console.log(transferenciasRealizadas)
     })
@@ -170,15 +192,18 @@ botonMovimientos.addEventListener("click", ()=> {
     })
 /* Fin de impresion */
 }
+
+/* Logueo */
         const verSiHayCosas = async (parametro,parametro2)=> {
             /* esta funcion evalua el usuario que se esta registrando  y rescata la informacion de la base de datos*/
             usuarioLogueado = usuariosRegistrados.find(user => user.usuario === parametro && user.contraseña === parametro2)
             if(usuarioLogueado === undefined ){
                 Swal.fire('Usuario no registrado o clave mal ingresada')
-            }else{ inyector()}
+            }else{
+                await Swal.fire('Bienvenido ' +usuarioLogueado.nombre) 
+                inyector()
+            }
         }
-
-
 /* FIN DE LOGEO */
 
 
