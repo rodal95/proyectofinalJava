@@ -7,8 +7,8 @@ const botonLog = document.querySelector("#Ingresar")
 const nuevoUsuario = document.getElementById("nuevoUsuario")
 const logueo = document.getElementById("logueo")
 const contenedor = document.getElementById("contenedor")
-
-
+const titulo2 = document.getElementById("titulo2")
+titulo2.innerHTML=`Bienvenido a cashy cash`
 botonLog.addEventListener('click', () => {
     fetch("base.json")
     .then(response => response.json())
@@ -26,34 +26,28 @@ botonLog.addEventListener('click', () => {
 
 
 const verSiHayCosas = async (parametro,parametro2)=> {
+    
     usuarioLogueado = usuariosRegistrados.find( user => user.usuario === parametro && user.contraseña === parametro2)
     if(usuarioLogueado === undefined ){
-        alert("no se encuentra")
+        Swal.fire('Usuario no registrado o clave mal ingresada')
     }else{ 
-         
+         titulo2.innerHTML=""
     console.log(usuarioLogueado.nombre)
     localStorage.setItem("usuarioActual",JSON.stringify(usuarioLogueado) )
     logueo.innerHTML = ""
     await Swal.fire('Bienvenido ' +usuarioLogueado.nombre)
-    
+    const titulo = document.getElementById("titulo")
+    titulo.innerHTML=`Bienvenido a Cashy Cash ${usuarioLogueado.nombre}<br>Elija la opcion que desea realizar`
     contenedor.innerHTML=`<div id="botones">
-    <h1 id="Titulo">Bienvenido a Cashy Cash ${usuarioLogueado.nombre}<br>Elija la opcion que desea realizar</h1>
     <button id="Consultar">Consultar Saldo</button><br>
     <button id="Transferir">Transferir</button><br>
     <button id="Movimientos">Resumen de Movimientos</button><br>
     <button id="Depositar">Depositar</button><br>
-    <button id="Prestamo"">Solicitar un Prestamo</button><br>
     <button id="Token">Token</button><br>
-    <button id="Salir"><a href="index.html">salir</a></button>
-        
-    </div> 
-    <div id="EscribirSaldo">
-
-    </div>
-    <div id="EscribirMovimientos">
-        
-    
-    </div>`
+    <button id="Salir"><a href="index.html">salir</a></button></div>
+    <div id="EscribirSaldo"></div>
+    <div id="hacerAcciones"></div>
+    <div id="EscribirMovimientos"></div>`
     
     const usuarioOn = JSON.parse(localStorage.getItem("usuarioActual"))
     
@@ -65,10 +59,10 @@ const botonTransferir = document.getElementById("Transferir")
 const botonMovimientos = document.getElementById("Movimientos")
 const botonDepositar = document.getElementById("Depositar")
 const botonToken = document.getElementById("Token")
-const titulo = document.getElementById("Titulo")
+
 const EscribirSaldo = document.getElementById("EscribirSaldo")
 const EscribirMovimientos = document.getElementById("EscribirMovimientos")
-
+const hacerAcciones = document.getElementById("hacerAcciones")
 
 
 let arrayMov = []
@@ -86,7 +80,7 @@ class Movimientos{
 /* consultar saldo */
 
 botonConsultar.addEventListener("click", ()=>{
-    EscribirSaldo.innerHTML = `<p> Saldo $ ${saldoActual}</p>`
+    EscribirSaldo.innerHTML = `<p>Su saldo es<br> <b>$ ${saldoActual}</b></p>`
     setTimeout(()=> EscribirSaldo.innerHTML = "", 5000)
    
 })
@@ -97,7 +91,7 @@ botonConsultar.addEventListener("click", ()=>{
 /* Depositos */
 
 botonDepositar.addEventListener("click", ()=> {
-    EscribirMovimientos.innerHTML= `Ingrese el monto a depositar<input id="MontoDepositar"></input><br>
+    hacerAcciones.innerHTML= `Ingrese el monto a depositar<input id="MontoDepositar"></input><br>
     <button id="aceptar">Aceptar</button><button id="cancelar">Cancelar</button>`
     const MontoDepositar = document.getElementById("MontoDepositar")
     const aceptar = document.getElementById("aceptar")
@@ -108,14 +102,14 @@ botonDepositar.addEventListener("click", ()=> {
     
     aceptar.addEventListener("click",()=>{
         saldoActual += parseInt(MontoDepositar.value)
-        EscribirMovimientos.innerHTML = ""
+        hacerAcciones.innerHTML = ""
         let informacionDeposito = new Movimientos(MontoDepositar.value, cbu, tipo,comprobante)
         Swal.fire("Deposito realizado con exito")
         arrayMov.push(informacionDeposito)
         return saldoActual, arrayMov
     })
     cancelar.addEventListener("click", ()=>{
-        EscribirMovimientos.innerHTML = ""
+        hacerAcciones.innerHTML = ""
     })
     
 })
@@ -125,7 +119,7 @@ botonDepositar.addEventListener("click", ()=> {
 /* Transferencias */
 
 botonTransferir.addEventListener("click", ()=>{
-    EscribirMovimientos.innerHTML = `Ingrese el monto<input id="MontoTransferir"></input><br>Ingrese el CBU
+    hacerAcciones.innerHTML = `<span>Ingrese el monto</span><input id="MontoTransferir"></input><br>Ingrese el CBU
     <input id="CBUenviar"></input><br><button id="aceptar">Aceptar</button><button id="cancelar">Cancelar</button>`
     const aceptar = document.getElementById("aceptar")
     const cancelar = document.getElementById("cancelar")
@@ -137,12 +131,12 @@ botonTransferir.addEventListener("click", ()=>{
         if(parseInt(MontoTransferir.value)<= saldoActual){
         Transferencias(MontoTransferir, CBUenviar)
         Swal.fire("Transferencia realizada con exito")
-        EscribirMovimientos.innerHTML=""
+        hacerAcciones.innerHTML=""
     }else {Swal.fire("Ingreso un monto a transferir superior a su saldo actual")}
 
     })
     cancelar.addEventListener("click", ()=> {
-        EscribirMovimientos.innerHTML = ""
+        hacerAcciones.innerHTML = ""
         console.log(transferenciasRealizadas)
     })
 
@@ -168,7 +162,7 @@ botonMovimientos.addEventListener("click", ()=> {
     if(arrayMov[0]=== undefined)Swal.fire("No se realizo ningun Movimiento en el dia de hoy")
     else{
     arrayMov.forEach(element => {
-        EscribirMovimientos.innerHTML += `El monto de $<b>${element.monto}</b> enviado al cbu <b>${element.cbu}</b> el tipo de movimiento fue<b> ${element.tipo}</b> Comprobante Nº<b> ${element.comprobante}</b> <br>` 
+        EscribirMovimientos.innerHTML += `<p>El monto de $<b>${element.monto}</b> enviado al cbu <b>${element.cbu}</b> el tipo de movimiento fue<b> ${element.tipo}</b> Comprobante Nº<b> ${element.comprobante}</b></p> <br>` 
     })
 }
 })

@@ -1,31 +1,86 @@
+
+body{
+    width: auto;
+    height: auto;
+    margin: auto;
+    background-color:rgba(173, 170, 170, 0.808)
+}
+section{
+    width: 900px;
+    height: 900px;
+    margin: auto;
+    background-color: rgb(137, 137, 255);
+    align-items: center;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+}
+#logueo{
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    align-items: left;
+}
 #contenedor{
     display: flex;
-    flex-direction: row;
+    height: auto;
+    width: auto;
+    flex-direction: column;
+    align-items: left;
     justify-content: space-around;
+    margin: 20px 20px;
+}
+#hacerAcciones{
+   padding: 20px;
+   background-color: blueviolet;
+   border-radius: 20px;
+   width: 250px;
+   display: flex;
+   flex-direction: column;
+   justify-content: end;
+   justify-items: center;
+   margin-bottom: 20px;
+   margin-left: 30px;
+    
 }
 #EscribirMovimientos{
     
-    padding: 10px;
-    border: 10px solid;
-    width: 550px;
-    height: 300px;
+    width: 700px;
+    height: auto;
+    border-radius: 20px;
+    background-color: rgb(25, 21, 255);
+    margin-left: 30px;
+    padding: 20px;
+    
 
 }
 #EscribirSaldo{
     display: flex;
     justify-content: center;
-    border: 10px solid;
+    background-color: rgb(158, 158, 250);
     width: 150px;
     height: 50px;
-}
-div{
+    border-radius: 20px;
+    margin-bottom: 20px;
     margin-left: 50px;
-    margin-bottom: 10px;
-    
+}
+p{
+    color:white
 }
 button{
-    padding:10px;
-    margin: 10px;
-    width: 150px;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
+#botones{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    background-color: aqua;
+    width: 850px;
+    border-radius: 20px;
+    margin: 20px 20px;
+}
+
+
 
