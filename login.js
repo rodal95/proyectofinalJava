@@ -16,22 +16,20 @@ botonLog.addEventListener('click', () => {
         usuariosRegistrados=elemento
         console.log(usuariosRegistrados)
         verSiHayCosas(usuarioLog.value,contraseñaLog.value)
+
         
         })
     .catch(err => console.log(err))
-
-
-
 })
 
 
-const verSiHayCosas = async (parametro,parametro2)=> {
-    
-    usuarioLogueado = usuariosRegistrados.find( user => user.usuario === parametro && user.contraseña === parametro2)
-    if(usuarioLogueado === undefined ){
-        Swal.fire('Usuario no registrado o clave mal ingresada')
-    }else{ 
-         titulo2.innerHTML=""
+window.addEventListener('DOMContentLoaded', ()=> {verSiHayCosas()})
+
+
+
+const inyector = async ()=>{   
+    /* con esta funcion hace la inyeccion de los nodos de html */
+    titulo2.innerHTML=""
     console.log(usuarioLogueado.nombre)
     localStorage.setItem("usuarioActual",JSON.stringify(usuarioLogueado) )
     logueo.innerHTML = ""
@@ -50,7 +48,14 @@ const verSiHayCosas = async (parametro,parametro2)=> {
     <div id="EscribirMovimientos"></div>`
     
     const usuarioOn = JSON.parse(localStorage.getItem("usuarioActual"))
+    agregadora()
     
+}
+
+
+
+const agregadora = ()=>{
+    /* esta funcion se utiliza para agregar eventos al DOM  que se agrega por JavaScript*/
 let saldoActual = parseInt(Math.random()*50124)
 
 const saldoCuenta = saldoActual
@@ -73,7 +78,7 @@ class Movimientos{
     this.cbu = cbu,
     this.tipo = tipo,
     this.comprobante = comprobante
-}
+    }
 }   
 
 
@@ -116,8 +121,8 @@ botonDepositar.addEventListener("click", ()=> {
 
 /* Fin de depositar */
 
-/* Transferencias */
 
+/* Transferencias */
 botonTransferir.addEventListener("click", ()=>{
     hacerAcciones.innerHTML = `<span>Ingrese el monto</span><input id="MontoTransferir"></input><br>Ingrese el CBU
     <input id="CBUenviar"></input><br><button id="aceptar">Aceptar</button><button id="cancelar">Cancelar</button>`
@@ -139,8 +144,6 @@ botonTransferir.addEventListener("click", ()=>{
         hacerAcciones.innerHTML = ""
         console.log(transferenciasRealizadas)
     })
-
-
 })
 
 function Transferencias(parametro,parametro2){
@@ -152,9 +155,9 @@ function Transferencias(parametro,parametro2){
     saldoActual -= plataenviar
     arrayMov.push(informacionTransferencias)
     return arrayMov,saldoActual
-}
+    }
 console.log(arrayMov)
-/* fin de transferencias */
+/* Fin de transferencias */
 
 /* Impresion de movimientos en pantalla */
 botonMovimientos.addEventListener("click", ()=> {
@@ -163,19 +166,17 @@ botonMovimientos.addEventListener("click", ()=> {
     else{
     arrayMov.forEach(element => {
         EscribirMovimientos.innerHTML += `<p>El monto de $<b>${element.monto}</b> enviado al cbu <b>${element.cbu}</b> el tipo de movimiento fue<b> ${element.tipo}</b> Comprobante Nº<b> ${element.comprobante}</b></p> <br>` 
+         })}
     })
-}
-})
-
-
-
 /* Fin de impresion */
-
-
-
-    
+}
+        const verSiHayCosas = async (parametro,parametro2)=> {
+            /* esta funcion evalua el usuario que se esta registrando  y rescata la informacion de la base de datos*/
+            usuarioLogueado = usuariosRegistrados.find(user => user.usuario === parametro && user.contraseña === parametro2)
+            if(usuarioLogueado === undefined ){
+                Swal.fire('Usuario no registrado o clave mal ingresada')
+            }else{ inyector()}
         }
-    }
 
 
 /* FIN DE LOGEO */
