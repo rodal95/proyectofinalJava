@@ -1,4 +1,4 @@
-/* logeo */
+
 let usuariosRegistrados = []
 const usuarioLog = document.getElementById("usuarioLog")
 const contraseñaLog = document.getElementById("contraseñaLog")
@@ -34,7 +34,7 @@ const saveActualizacion = ()=>{
     }
 }
 
-window.addEventListener('DOMContentLoaded', saveActualizacion)
+document.addEventListener('DOMContentLoaded', saveActualizacion)
 
 const inyector =  ()=>{   
     /* con esta funcion hace la inyeccion de los nodos de html */
@@ -56,17 +56,13 @@ const inyector =  ()=>{
     <div id="EscribirSaldo"></div>
     <div id="hacerAcciones"></div>
     <div id="EscribirMovimientos"></div>`
-    
     agregadora()
-    
 }
-
-
-
 const agregadora = ()=>{
     /* esta funcion se utiliza para agregar eventos al DOM  que se agrega por JavaScript*/
-let saldoActual = parseInt(Math.random()*50124)
 
+let saldoActual = parseInt(Math.random()*50124)
+localStorage.setItem("Saldo",JSON.stringify(saldoActual))
 
 const botonConsultar = document.getElementById("Consultar")
 const botonTransferir = document.getElementById("Transferir")
@@ -81,7 +77,7 @@ const hacerAcciones = document.getElementById("hacerAcciones")
 const escribirToken = document.getElementById("escribirToken")
 
 let arrayMov = []
-let intervalo = 0
+
 class Movimientos{
         constructor (monto,cbu,tipo,comprobante) {
     this.monto = monto,
@@ -97,18 +93,18 @@ botonToken.addEventListener("click", ()=>{
 })
 
 
-/* consultar saldo */
+/* consultar saldo -----------------------------------------------------*/
 
 botonConsultar.addEventListener("click", ()=>{
-    EscribirSaldo.innerHTML = `<p>Su saldo es<br> <b>$ ${saldoActual}</b></p>`
+    let saldoMostrar = JSON.parse(localStorage.getItem("Saldo"))
+    EscribirSaldo.innerHTML = `<p>Su saldo es<br> <b>$ ${saldoMostrar}</b></p>`
     setTimeout(()=> EscribirSaldo.innerHTML="", 7000)
-   
 })
 
 
 /* fin de consultar saldo */
 
-/* Depositos */
+/* Depositos-------------------------------------------------------------- */
 
 botonDepositar.addEventListener("click", ()=> {
     hacerAcciones.innerHTML= `Ingrese el monto a depositar<input id="MontoDepositar"></input><br>
@@ -126,25 +122,29 @@ botonDepositar.addEventListener("click", ()=> {
         let informacionDeposito = new Movimientos(MontoDepositar.value, cbu, tipo,comprobante)
         Swal.fire("Deposito realizado con exito")
         arrayMov.push(informacionDeposito)
+        localStorage.setItem("Movimientos",JSON.stringify(arrayMov))
+        localStorage.setItem("Saldo",JSON.stringify(saldoActual))
         return saldoActual, arrayMov
     })
     cancelar.addEventListener("click", ()=>{
         hacerAcciones.innerHTML = ""
     })
-    
 })
-
 /* Fin de depositar */
 
 
-/**Boton salir */
+/**Boton salir ---------------------------------------------------------------*/
 botonSalir.addEventListener("click", ()=>{
     window.localStorage.removeItem('usuarioActual')
+    localStorage.removeItem("Movimientos")
+    localStorage.removeItem("Saldo")
     location.reload()
+
 })
 /* Fin de salir*/
 
-/* Transferencias */
+
+/* Transferencias -------------------------------------------------------------*/
 botonTransferir.addEventListener("click", ()=>{
     hacerAcciones.innerHTML = `<span>Ingrese el monto $$</span><input type="number" id="MontoTransferir"></input><br>Ingrese el CBU
     <input type="number" id="CBUenviar"></input><br><button id="aceptar">Aceptar</button><button id="cancelar">Cancelar</button>`
@@ -164,7 +164,6 @@ botonTransferir.addEventListener("click", ()=>{
     })  
         cancelar.addEventListener("click", ()=> {
         hacerAcciones.innerHTML = ""
-        console.log(transferenciasRealizadas)
     })
 })
 
@@ -175,25 +174,28 @@ function Transferencias(parametro,parametro2){
     const comprobante = parseInt(Math.random()*156584782)
     let informacionTransferencias = new Movimientos(plataenviar,cbu,tipo,comprobante)
     saldoActual -= plataenviar
+    localStorage.setItem("Saldo",JSON.stringify(saldoActual))
+    
     arrayMov.push(informacionTransferencias)
+    localStorage.setItem("Movimientos",JSON.stringify(arrayMov))
     return arrayMov,saldoActual
     }
-console.log(arrayMov)
 /* Fin de transferencias */
 
-/* Impresion de movimientos en pantalla */
+/* Impresion de movimientos en pantalla -----------------------------------------*/
 botonMovimientos.addEventListener("click", ()=> {
     EscribirMovimientos.innerHTML = ""
-    if(arrayMov[0]=== undefined)Swal.fire("No se realizo ningun Movimiento en el dia de hoy")
+    movimientosStorage = JSON.parse(localStorage.getItem("Movimientos"))
+    if(!movimientosStorage && movimientosStorage === null)Swal.fire("No se realizo ningun Movimiento en el dia de hoy")
     else{
-    arrayMov.forEach(element => {
+    movimientosStorage.forEach(element => {
         EscribirMovimientos.innerHTML += `<p>El monto de $<b>${element.monto}</b> enviado al cbu <b>${element.cbu}</b> el tipo de movimiento fue<b> ${element.tipo}</b> Comprobante Nº<b> ${element.comprobante}</b></p> <br>` 
          })}
     })
 /* Fin de impresion */
 }
 
-/* Logueo */
+/* Logueo ------------------------------------------------------------------------*/
         const verSiHayCosas = async (parametro,parametro2)=> {
             /* esta funcion evalua el usuario que se esta registrando  y rescata la informacion de la base de datos*/
             usuarioLogueado = usuariosRegistrados.find(user => user.usuario === parametro && user.contraseña === parametro2)
