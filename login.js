@@ -1,5 +1,13 @@
 
 let usuariosRegistrados = []
+let arrayMov = []
+
+if(localStorage.getItem("Movimientos") === null){
+    
+}else{
+    arrayMov = JSON.parse(localStorage.getItem("Movimientos"))
+}
+
 const usuarioLog = document.getElementById("usuarioLog")
 const contraseñaLog = document.getElementById("contraseñaLog")
 const botonLog = document.querySelector("#Ingresar")
@@ -27,12 +35,13 @@ const saveActualizacion = ()=>{
     if(window.localStorage.getItem('usuarioActual')){
         usuarioLogueado = JSON.parse(window.localStorage.getItem('usuarioActual'))
         inyector()
-        setTimeout(() => {window.localStorage.removeItem('usuarioActual')
-        }, 35000);
+        ;
     }else{
         return
     }
 }
+
+
 
 document.addEventListener('DOMContentLoaded', saveActualizacion)
 
@@ -74,6 +83,7 @@ if(localStorage.getItem("Saldo") === null){
 
 
 
+
 const botonConsultar = document.getElementById("Consultar")
 const botonTransferir = document.getElementById("Transferir")
 const botonMovimientos = document.getElementById("Movimientos")
@@ -86,8 +96,9 @@ const EscribirMovimientos = document.getElementById("EscribirMovimientos")
 const hacerAcciones = document.getElementById("hacerAcciones")
 const escribirToken = document.getElementById("escribirToken")
 
-let arrayMov = []
-localStorage.setItem("Movimientos",JSON.stringify(arrayMov))
+
+
+
 
 class Movimientos{
         constructor (monto,cbu,tipo,comprobante) {
@@ -196,10 +207,11 @@ function Transferencias(parametro,parametro2){
 /* Impresion de movimientos en pantalla -----------------------------------------*/
 botonMovimientos.addEventListener("click", ()=> {
     EscribirMovimientos.innerHTML = ""
-    movimientosStorage = JSON.parse(localStorage.getItem("Movimientos"))
-    if(movimientosStorage[0] === undefined)Swal.fire("No se realizo ningun Movimiento en el dia de hoy")
+    
+    if(arrayMov === null || arrayMov[0] === undefined) {Swal.fire("No se realizo ningun Movimiento en el dia de hoy")
+    }
     else{
-    movimientosStorage.forEach(element => {
+    arrayMov.forEach(element => {
         EscribirMovimientos.innerHTML += `<p>El monto de $<b>${element.monto}</b> enviado al cbu <b>${element.cbu}</b> el tipo de movimiento fue<b> ${element.tipo}</b> Comprobante Nº<b> ${element.comprobante}</b></p> <br>` 
          })}
     })
