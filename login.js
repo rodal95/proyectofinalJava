@@ -61,8 +61,18 @@ const inyector =  ()=>{
 const agregadora = ()=>{
     /* esta funcion se utiliza para agregar eventos al DOM  que se agrega por JavaScript*/
 
-let saldoActual = parseInt(Math.random()*50124)
-localStorage.setItem("Saldo",JSON.stringify(saldoActual))
+let saldoAsignado  = 0
+var saldoActual = 0
+if(localStorage.getItem("Saldo") === null){
+    saldoAsignado  = parseInt(Math.random()*50124)
+    saldoActual = saldoAsignado
+    localStorage.setItem("Saldo",JSON.stringify(saldoActual))
+}else{
+    saldoActual =JSON.parse(localStorage.getItem("Saldo"))
+
+}
+
+
 
 const botonConsultar = document.getElementById("Consultar")
 const botonTransferir = document.getElementById("Transferir")
@@ -77,6 +87,7 @@ const hacerAcciones = document.getElementById("hacerAcciones")
 const escribirToken = document.getElementById("escribirToken")
 
 let arrayMov = []
+localStorage.setItem("Movimientos",JSON.stringify(arrayMov))
 
 class Movimientos{
         constructor (monto,cbu,tipo,comprobante) {
@@ -186,7 +197,7 @@ function Transferencias(parametro,parametro2){
 botonMovimientos.addEventListener("click", ()=> {
     EscribirMovimientos.innerHTML = ""
     movimientosStorage = JSON.parse(localStorage.getItem("Movimientos"))
-    if(!movimientosStorage && movimientosStorage === null)Swal.fire("No se realizo ningun Movimiento en el dia de hoy")
+    if(movimientosStorage[0] === undefined)Swal.fire("No se realizo ningun Movimiento en el dia de hoy")
     else{
     movimientosStorage.forEach(element => {
         EscribirMovimientos.innerHTML += `<p>El monto de $<b>${element.monto}</b> enviado al cbu <b>${element.cbu}</b> el tipo de movimiento fue<b> ${element.tipo}</b> Comprobante Nº<b> ${element.comprobante}</b></p> <br>` 
